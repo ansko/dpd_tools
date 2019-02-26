@@ -86,8 +86,10 @@ def polymer_chain(**kwargs):
     lz = zhi - zlo
     chain = {}
     in_chain_id = 1
+    fails_done = 0
+    fails_allowed = polymerization * 10
 
-    while True:
+    while fails_done < fails_allowed:
         if not chain:
             x = xlo + random.random() * lx
             y = ylo + random.random() * ly
@@ -105,10 +107,14 @@ def polymer_chain(**kwargs):
             dy = y - atom['y']
             dz = z - atom['z']
             dr2 = dx**2 + dy**2 + dz**2
-            if dr2 < 3.5*bead_radius**2:
+            if atom['phase'] == 'filler' and dr2 < 9*bead_radius**2:
+                all_is_ok = False
+                break
+            elif dr2 < 4*bead_radius**2:
                 all_is_ok = False
                 break
         if not all_is_ok:
+            fails_done += 1
             continue
         for atom in structure['atoms'].values():
             dx = x - atom['x']

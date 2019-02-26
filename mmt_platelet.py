@@ -38,10 +38,10 @@ def make_mmt_platelet_charged():
     '''
     bead_radius = 1       # bead radius - same for all beads
     cell_side = 15        # horizontal cell size along x and y (in beads)
-    cell_height = 10      # vertical cell side (in beads)
+    cell_height = 15      # vertical cell side (in beads)
 
     charged_count = 10
-    bead_charge = 0.1
+    bead_charge = 1
 
     structure = mmt_sheet_double_diagonals_periodic(
         cell_side=cell_side,
@@ -54,7 +54,7 @@ def make_mmt_platelet_charged():
     structure['cell'] = {
         'xlo': 0, 'xhi': cell_side * 2*bead_radius,
         'ylo': 0, 'yhi': cell_side * 2*bead_radius,
-        'zlo': -3*cell_height/2*bead_radius, 'zhi': 3*cell_height/2 * bead_radius
+        'zlo': -cell_height/2*bead_radius, 'zhi': cell_height/2 * bead_radius
     }
     mmt_atoms_count = len(structure['atoms'])
     print('atoms in mmt', mmt_atoms_count)

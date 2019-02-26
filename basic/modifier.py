@@ -176,7 +176,7 @@ def modifier_random(**kwargs):
     return True, structure
 
 
-def modifier_into_interlayer(**kwargs):
+def modifier_near_clays(**kwargs):
     '''
     Required parameters:
         head_charge - charge of the head of the modifier
@@ -232,7 +232,6 @@ def modifier_into_interlayer(**kwargs):
         zlo = structure['cell']['zlo']
         zhi = structure['cell']['zhi']
         cell_was_set = True
-        print('mod ok')
     except KeyError:
         try:
             inflation = 1.25  # if atoms exist but no borders, system increases
@@ -285,12 +284,15 @@ def modifier_into_interlayer(**kwargs):
             y += 2*bead_radius * math.sin(theta) * math.sin(phi)
             z += 2*bead_radius * math.cos(theta)
         all_is_ok = True
+        near_clay = False
         for atom in structure['atoms'].values():
             dx = x - atom['x']
             dy = y - atom['y']
             dz = z - atom['z']
             dr2 = dx**2 + dy**2 + dz**2
-            if dr2 < 3.5*bead_radius**2:
+            if dr2 < 9*bead_radius**2 and atom['phase'] == 'filler':
+                near_clay = True
+            if dr2 < 4*bead_radius**2:
                 all_is_ok = False
                 break
         if not all_is_ok:
@@ -301,10 +303,10 @@ def modifier_into_interlayer(**kwargs):
             dy = y - atom['y']
             dz = z - atom['z']
             dr2 = dx**2 + dy**2 + dz**2
-            if dr2 < 3.5*bead_radius**2:
+            if dr2 < 4*bead_radius**2:
                 all_is_ok = False
                 break
-        if not all_is_ok:
+        if not all_is_ok or not near_clay:
             fails_done += 1
             continue
         if not modifier:  # appending head atom
