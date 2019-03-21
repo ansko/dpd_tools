@@ -116,7 +116,7 @@ def random_chain(**kwargs):
         if not all_is_ok:
             fails_done += 1
             continue
-        for atom in structure['atoms'].values():
+        for atom in chain.values():
             dx = x - atom['x']
             dy = y - atom['y']
             dz = z - atom['z']
@@ -136,6 +136,8 @@ def random_chain(**kwargs):
         in_chain_id += 1
         if len(chain) == polymerization:
             break
+    if len(chain) != polymerization:
+        return False, {}
     for k, v in chain.items():
         structure['atoms'][atom_id + k - 1] = v
         if k > 1:

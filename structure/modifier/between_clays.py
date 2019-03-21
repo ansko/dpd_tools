@@ -94,8 +94,8 @@ def between_clays(**kwargs):
         #    x = clay_bead['x']
         #    y = clay_bead['y']
         #    z = clay_bead['z']
-            x = xlo + lx/4 + random.random() * lx/2
-            y = ylo + ly/4 + random.random() * ly/2
+            x = xlo + lx/2 + (random.random() - 0.5) * lx/4
+            y = ylo + ly/2 + (random.random() - 0.5) * ly/4
             z = bottom + (top - bottom) * random.random()
         else:
             x = modifier[max(modifier.keys())]['x']
